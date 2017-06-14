@@ -9,6 +9,7 @@ describe GapIsland do
   let(:e2) { Element.new(:attribute => attr1, :date_range => Date.civil(2017, 2, 1)..Date.civil(2017, 3, 31)) }
   let(:e3) { Element.new(:attribute => attr1, :date_range => Date.civil(2017, 4, 1)..Date.civil(2017, 4, 30)) }
   let(:e4) { Element.new(:attribute => attr1, :date_range => Date.civil(2017, 1, 15)..Date.civil(2017, 2, 28)) }
+  let(:e5) { Element.new(:attribute => attr1, :date_range => Date.civil(2017, 8, 15)..Date.civil(2017, 10, 31)) }
   let(:f1) { Element.new(:attribute => attr2, :date_range => Date.civil(2017, 2, 1)..Date.civil(2017, 3, 31)) }
   let(:f2) { Element.new(:attribute => attr2, :date_range => Date.civil(2017, 4, 1)..Date.civil(2017, 4, 30)) }
   let(:f3) { Element.new(:attribute => attr2, :date_range => Date.civil(2017, 5, 1)..Date.civil(2017, 7, 31)) }
@@ -83,9 +84,12 @@ describe GapIsland do
     end
 
     context 'combined partition elements' do
-      let(:combined_elements){partition.key(attr1).combined_elements}
+      let(:combined_elements) { partition.key(attr1).combined_elements }
       it 'should combine elements' do
         expect(combined_elements.size).to eq(1)
+      end
+      it 'is still an element after combined' do
+        expect(combined_elements.first.class).to eq(Element)
       end
       it 'should have this start date' do
         expect(combined_elements.first.begin_date).to eq(e1.begin_date)
@@ -95,4 +99,26 @@ describe GapIsland do
       end
     end
   end
+
+  context 'find gaps' do
+    let(:partition) { GapIsland::Partition.new([e2, e1, f1, e3, e5]) }
+    let(:gap_list) { GapIsland::GapList.new(:partition => partition, range: Date.civil(2000, 1, 1)..Date.civil(2020, 12, 31)) }
+
+    it 'gaps has no attribute' do
+      expect(gap_list.to_a.first.attribute).to eq(GapIsland::GapList::NULL_ATTR)
+    end
+
+    it '#to_a' do
+      expect(gap_list.to_a[0].begin_date).to eq(Date.civil(2000, 1, 1))
+      expect(gap_list.to_a[0].end_date).to eq(Date.civil(2016, 12, 31))
+
+      expect(gap_list.to_a[1].begin_date).to eq(Date.civil(2017, 5, 1))
+      expect(gap_list.to_a[1].end_date).to eq(Date.civil(2017, 8, 14))
+
+      expect(gap_list.to_a[2].begin_date).to eq(Date.civil(2017, 11, 1))
+      expect(gap_list.to_a[2].end_date).to eq(Date.civil(2020, 12, 31))
+    end
+
+  end
+
 end

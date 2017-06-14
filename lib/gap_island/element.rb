@@ -22,6 +22,7 @@ class Element
   end
 
   def <=>(element)
+    return 0 if element.nil? # don't sort if element is nil
     [begin_date, end_date] <=> [element.begin_date, element.end_date]
   end
 

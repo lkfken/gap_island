@@ -3,6 +3,7 @@ require_relative 'gap_island/attribute'
 require_relative 'gap_island/element'
 require_relative 'gap_island/group_elements'
 require_relative 'gap_island/partition'
+require_relative 'gap_island/gap_list'
 
 module GapIsland
   class DifferentAttrError < StandardError

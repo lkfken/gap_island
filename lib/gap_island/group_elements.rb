@@ -3,17 +3,34 @@ class GroupElements
 
   def initialize(attribute: nil, elements: nil)
     @attribute = attribute
-    @elements  = elements.sort
+    @elements  = elements
+    @elements  = elements.sort if elements && elements.size > 1
   end
 
-  def combined_elements(some_elements = elements)
-    return some_elements if some_elements.size == 1
-    elements = GapIsland::Arithmetic.new.group(some_elements[0], some_elements[1])
-    if some_elements.size > 2
-      remain_elements = some_elements[2..-1]
-      combined_elements([elements, remain_elements].flatten)
+  def empty?
+    size.zero?
+  end
+
+  def size
+    combined_elements.size
+  end
+
+  def [](index)
+    combined_elements[index]
+  end
+
+  def combined_elements
+    @combined_elements ||= __combined_elements__
+  end
+
+  def __combined_elements__(some_segments = elements)
+    return some_segments if some_segments.size == 1
+    segments = GapIsland::Arithmetic.new.group(some_segments[0], some_segments[1])
+    if some_segments.size > 2
+      remain_segments = some_segments[2..-1]
+      __combined_elements__([segments, remain_segments].flatten)
     else
-      elements
+      segments
     end
   end
 
