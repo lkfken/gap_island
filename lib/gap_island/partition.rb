@@ -3,6 +3,7 @@ module GapIsland
     attr_reader :islands
 
     def initialize(elements)
+
       hash = elements.inject(Hash.new) do |hsh, e|
         hsh[e.attribute] ||= []
         hsh[e.attribute] << e

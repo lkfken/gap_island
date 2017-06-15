@@ -5,14 +5,14 @@ describe GapIsland do
   let(:elements) { FactoryGirl.factories }
   let(:attr1) { GapIsland::Attribute.new(['A', '1']) }
   let(:attr2) { GapIsland::Attribute.new(['A', '2']) }
-  let(:e1) { Element.new(:attribute => attr1, :date_range => Date.civil(2017, 1, 1)..Date.civil(2017, 1, 31)) }
-  let(:e2) { Element.new(:attribute => attr1, :date_range => Date.civil(2017, 2, 1)..Date.civil(2017, 3, 31)) }
-  let(:e3) { Element.new(:attribute => attr1, :date_range => Date.civil(2017, 4, 1)..Date.civil(2017, 4, 30)) }
-  let(:e4) { Element.new(:attribute => attr1, :date_range => Date.civil(2017, 1, 15)..Date.civil(2017, 2, 28)) }
-  let(:e5) { Element.new(:attribute => attr1, :date_range => Date.civil(2017, 8, 15)..Date.civil(2017, 10, 31)) }
-  let(:f1) { Element.new(:attribute => attr2, :date_range => Date.civil(2017, 2, 1)..Date.civil(2017, 3, 31)) }
-  let(:f2) { Element.new(:attribute => attr2, :date_range => Date.civil(2017, 4, 1)..Date.civil(2017, 4, 30)) }
-  let(:f3) { Element.new(:attribute => attr2, :date_range => Date.civil(2017, 5, 1)..Date.civil(2017, 7, 31)) }
+  let(:e1) { GapIsland::Element.new(:attribute => attr1, :date_range => Date.civil(2017, 1, 1)..Date.civil(2017, 1, 31)) }
+  let(:e2) { GapIsland::Element.new(:attribute => attr1, :date_range => Date.civil(2017, 2, 1)..Date.civil(2017, 3, 31)) }
+  let(:e3) { GapIsland::Element.new(:attribute => attr1, :date_range => Date.civil(2017, 4, 1)..Date.civil(2017, 4, 30)) }
+  let(:e4) { GapIsland::Element.new(:attribute => attr1, :date_range => Date.civil(2017, 1, 15)..Date.civil(2017, 2, 28)) }
+  let(:e5) { GapIsland::Element.new(:attribute => attr1, :date_range => Date.civil(2017, 8, 15)..Date.civil(2017, 10, 31)) }
+  let(:f1) { GapIsland::Element.new(:attribute => attr2, :date_range => Date.civil(2017, 2, 1)..Date.civil(2017, 3, 31)) }
+  let(:f2) { GapIsland::Element.new(:attribute => attr2, :date_range => Date.civil(2017, 4, 1)..Date.civil(2017, 4, 30)) }
+  let(:f3) { GapIsland::Element.new(:attribute => attr2, :date_range => Date.civil(2017, 5, 1)..Date.civil(2017, 7, 31)) }
 
   context 'combine periods if no gap' do
     let(:result) { GapIsland::Arithmetic.new.group(e1, e2) }
@@ -89,7 +89,7 @@ describe GapIsland do
         expect(combined_elements.size).to eq(1)
       end
       it 'is still an element after combined' do
-        expect(combined_elements.first.class).to eq(Element)
+        expect(combined_elements.first.class).to eq(GapIsland::Element)
       end
       it 'should have this start date' do
         expect(combined_elements.first.begin_date).to eq(e1.begin_date)
@@ -105,7 +105,7 @@ describe GapIsland do
     let(:gap_list) { GapIsland::GapList.new(:partition => partition, range: Date.civil(2000, 1, 1)..Date.civil(2020, 12, 31)) }
 
     it 'gaps has no attribute' do
-      expect(gap_list.to_a.first.attribute).to eq(GapIsland::GapList::NULL_ATTR)
+      expect(gap_list.islands.size).to eq(2)
     end
 
     it '#to_a' do
