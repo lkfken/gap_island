@@ -22,7 +22,31 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+An element consists of 2 parts: attribute and date range
+
+Define your attribute as such:
+```ruby
+attr = GapIsland::Attribute.new(obj)
+```
+
+Next, define your element:
+```ruby
+element1 =   GapIsland::Element.new(:attribute => attr, :date_range => Date.civil(2017, 1, 1)..Date.civil(2017, 1, 31))
+element2 =   GapIsland::Element.new(:attribute => attr, :date_range => Date.civil(2017, 2, 1)..Date.civil(2017, 3, 31))
+element3 =   GapIsland::Element.new(:attribute => attr, :date_range => Date.civil(2017, 6, 1)..Date.civil(2017, 8, 31))
+```
+
+Add these elements to a partition:
+```ruby
+partition = GapIsland::Partition.new([element1, element2, element3]) 
+```
+
+Last, give it a foundation:
+```ruby
+foundation = GapIsland::Foundation.new(:partition => partition, range: Date.civil(2000, 1, 1)..Date.civil(2020, 12, 31))
+```
+
+
 
 ## Development
 

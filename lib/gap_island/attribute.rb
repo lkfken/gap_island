@@ -3,7 +3,6 @@ module GapIsland
     attr_reader :content
 
     def initialize(content)
-      raise "#{content.class} must have :hash method" unless content.respond_to?(:hash)
       @content = content
     end
 
@@ -16,6 +15,7 @@ module GapIsland
     end
 
     def hash
+      raise "#{content.class} must have :hash method in order to use it as a hash key or as Set" unless content.respond_to?(:hash)
       content.hash
     end
 

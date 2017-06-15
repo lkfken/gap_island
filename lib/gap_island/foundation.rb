@@ -1,7 +1,7 @@
 module GapIsland
-  class GapList
+  class Foundation
     attr_reader :range, :partition
-    NULL_ATTR = nil
+    NULL_ATTR = 'gap'
 
     def initialize(range:, partition:)
       @range     = range
@@ -12,20 +12,20 @@ module GapIsland
       @@gap_attribute ||= GapIsland::Attribute.new(NULL_ATTR)
     end
 
-    def to_a
-      inner_gaps = gather_inner_gaps(islands)
-      outer_gaps = gather_outer_gaps(islands)
+    def gaps
+      inner_gaps = gather_inner_gaps(combined_islands_no_attr)
+      outer_gaps = gather_outer_gaps(combined_islands_no_attr)
       elements   = [inner_gaps, outer_gaps].flatten.compact.sort
     end
 
     def islands
-      combined_islands_no_attr
+      partition.islands
     end
 
     private
 
     def __islands
-      @islands ||= partition.attributes.flat_map { |attribute| partition.key(attribute).combined_elements }
+      @group_elements ||= partition.attributes.flat_map { |attribute| partition.key(attribute).combined_elements }
     end
 
     def islands_no_attr

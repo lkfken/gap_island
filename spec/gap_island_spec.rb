@@ -102,21 +102,21 @@ describe GapIsland do
 
   context 'find gaps' do
     let(:partition) { GapIsland::Partition.new([e2, e1, f1, e3, e5]) }
-    let(:gap_list) { GapIsland::GapList.new(:partition => partition, range: Date.civil(2000, 1, 1)..Date.civil(2020, 12, 31)) }
+    let(:foundation) { GapIsland::Foundation.new(:partition => partition, range: Date.civil(2000, 1, 1)..Date.civil(2020, 12, 31)) }
 
     it 'gaps has no attribute' do
-      expect(gap_list.islands.size).to eq(2)
+      expect(foundation.islands.size).to eq(2)
     end
 
     it '#to_a' do
-      expect(gap_list.to_a[0].begin_date).to eq(Date.civil(2000, 1, 1))
-      expect(gap_list.to_a[0].end_date).to eq(Date.civil(2016, 12, 31))
+      expect(foundation.gaps[0].begin_date).to eq(Date.civil(2000, 1, 1))
+      expect(foundation.gaps[0].end_date).to eq(Date.civil(2016, 12, 31))
 
-      expect(gap_list.to_a[1].begin_date).to eq(Date.civil(2017, 5, 1))
-      expect(gap_list.to_a[1].end_date).to eq(Date.civil(2017, 8, 14))
+      expect(foundation.gaps[1].begin_date).to eq(Date.civil(2017, 5, 1))
+      expect(foundation.gaps[1].end_date).to eq(Date.civil(2017, 8, 14))
 
-      expect(gap_list.to_a[2].begin_date).to eq(Date.civil(2017, 11, 1))
-      expect(gap_list.to_a[2].end_date).to eq(Date.civil(2020, 12, 31))
+      expect(foundation.gaps[2].begin_date).to eq(Date.civil(2017, 11, 1))
+      expect(foundation.gaps[2].end_date).to eq(Date.civil(2020, 12, 31))
     end
 
   end

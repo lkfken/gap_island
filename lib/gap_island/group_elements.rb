@@ -12,6 +12,14 @@ module GapIsland
       size.zero?
     end
 
+    def to_hash
+      @to_hash ||= begin
+        @to_hash            = Hash.new
+        @to_hash[attribute] = combined_elements
+        @to_hash
+      end
+    end
+
     def size
       combined_elements.size
     end
