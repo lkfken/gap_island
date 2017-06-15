@@ -46,6 +46,17 @@ Last, give it a foundation:
 foundation = GapIsland::Foundation.new(:partition => partition, range: Date.civil(2000, 1, 1)..Date.civil(2020, 12, 31))
 ```
 
+Now it will have gaps and islands calculated.
+
+```ruby
+*** gaps ***
+{:attribute=>"gap", :range=>Sat, 01 Jan 2000..Sat, 31 Dec 2016 00:00:00 +0000}
+{:attribute=>"gap", :range=>Sat, 01 Apr 2017 00:00:00 +0000..Wed, 31 May 2017 00:00:00 +0000}
+{:attribute=>"gap", :range=>Fri, 01 Sep 2017 00:00:00 +0000..Thu, 31 Dec 2020}
+*** islands ***
+{:attribute=>"#<Object:0x61eaec38>", :range=>Sun, 01 Jan 2017 00:00:00 +0000..Fri, 31 Mar 2017 00:00:00 +0000}
+{:attribute=>"#<Object:0x61eaec38>", :range=>Thu, 01 Jun 2017 00:00:00 +0000..Thu, 31 Aug 2017 00:00:00 +0000}
+```
 
 
 ## Development
