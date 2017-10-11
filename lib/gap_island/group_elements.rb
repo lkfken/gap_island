@@ -34,12 +34,21 @@ module GapIsland
 
     def __combined_elements__(some_segments = elements)
       return some_segments if some_segments.size <= 1
-      segments = GapIsland::Arithmetic.new.group(some_segments[0], some_segments[1])
-      if some_segments.size > 2
-        remain_segments = some_segments[2..-1]
-        __combined_elements__([segments, remain_segments].flatten)
+      remain_segments = some_segments[1..-1]
+      combined_remain_segments = case
+                                 when remain_segments.empty?
+                                   []
+                                 when remain_segments.size == 1
+                                   GapIsland::Arithmetic.new.group(some_segments[0], remain_segments[0])
+                                 when remain_segments.size > 1
+                                   __combined_elements__(remain_segments)
+                                 end
+
+      front_segments           = GapIsland::Arithmetic.new.group(some_segments[0], combined_remain_segments[0])
+      if combined_remain_segments.size > 1
+        return front_segments.concat(combined_remain_segments[1..-1]).flatten
       else
-        segments
+        return front_segments
       end
     end
 
